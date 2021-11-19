@@ -2,12 +2,15 @@ import streamlit as st
 from bokeh.models.widgets import Button
 from bokeh.models import CustomJS
 from streamlit_bokeh_events import streamlit_bokeh_events
+st.title("Application Speech-to-text :microphone:")
+st.write("Dans cette application, vous pouvez retranscrire ce que vous dîtes à l'aide du micro.")
 
-stt_button = Button(label="Speak", width=100)
+
+stt_button = Button(label="Enregistrez-vous !", width=200)
 
 stt_button.js_on_event("button_click", CustomJS(code="""
     var recognition = new webkitSpeechRecognition();
-    recognition.continuous = true;
+    recognition.continuous = false;
     recognition.interimResults = true;
  
     recognition.onresult = function (e) {
@@ -34,4 +37,5 @@ result = streamlit_bokeh_events(
 
 if result:
     if "GET_TEXT" in result:
-        st.write(result.get("GET_TEXT"))
+        st.write("Voici la restranscription :")
+        st.write(f'<font color="#4A47A3">{result.get("GET_TEXT")}</font>', unsafe_allow_html=True)
